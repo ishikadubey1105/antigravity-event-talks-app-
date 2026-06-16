@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Hub</title>
+    <meta name="description" content="Track, search, and share the latest Google Cloud BigQuery release notes.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="glass-background"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar / Tweet Builder -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fa-solid fa-database"></i></div>
+                <div class="logo-text">
+                    <h1>BigQuery</h1>
+                    <span>Release Hub</span>
+                </div>
+            </div>
+            
+            <div class="tweet-builder-card">
+                <h2><i class="fa-brands fa-x-twitter"></i> Tweet Composer</h2>
+                <p class="description">Select updates from the list or write a custom tweet. We'll format it with relevant hashtags.</p>
+                
+                <div class="composer-container">
+                    <textarea id="tweet-text" placeholder="Select an update or write your tweet here..." maxlength="280"></textarea>
+                    <div class="composer-footer">
+                        <span id="char-counter" class="char-count">280</span>
+                        <button id="tweet-btn" class="btn btn-primary" onclick="publishTweet()">
+                            <i class="fa-brands fa-x-twitter"></i> Post Update
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="selected-notes-tracker">
+                    <h3>Selected Updates</h3>
+                    <ul id="selected-list" class="selected-list-empty">
+                        <li class="empty-msg">No updates selected. Click the checkbox on any update card to draft a tweet.</li>
+                    </ul>
+                    <button id="clear-selections-btn" class="btn btn-secondary btn-sm" onclick="clearSelections()" style="display: none;">
+                        <i class="fa-solid fa-trash-can"></i> Clear All
+                    </button>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <p>Designed for developers to stay up-to-date with BigQuery releases.</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-info">
+                    <h2>Latest Release Notes</h2>
+                    <p id="status-text">Fetching latest updates...</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Search release notes..." oninput="filterNotes()">
+                    </div>
+                    <button id="refresh-btn" class="btn btn-refresh" onclick="loadNotes(true)">
+                        <i id="refresh-icon" class="fa-solid fa-rotate-right"></i> Refresh
+                    </button>
+                </div>
+            </header>
+
+            <!-- Loading Skeleton -->
+            <div id="loading-container" class="loading-container">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-container" class="error-container" style="display: none;">
+                <div class="error-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                <h3>Failed to load release notes</h3>
+                <p id="error-msg">Something went wrong while fetching the feed from Google Cloud.</p>
+                <button class="btn btn-primary" onclick="loadNotes(true)">
+                    <i class="fa-solid fa-arrows-rotate"></i> Try Again
+                </button>
+            </div>
+
+            <!-- Notes List -->
+            <div id="notes-container" class="notes-container"></div>
+        </main>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
